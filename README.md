@@ -9,3 +9,6 @@ pip install -r requirements.txt
 ```bash
 .\run.bat
 ```
+
+## Version Python
+>⚠️ **3.12.9**
