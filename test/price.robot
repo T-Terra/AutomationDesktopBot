@@ -5,7 +5,8 @@ Resource    ${CURDIR}./../resource/priceLib.resource
 Init Bot
     Open Browser Web
 Check For Search
-    Search
+    Search Product 1
+    Search Product 2
 Finish Check price
     Close Browser
     

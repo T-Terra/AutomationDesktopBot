@@ -8,6 +8,7 @@ report/
 
 # Distribution / packaging
 .Python
+img/
 build/
 develop-eggs/
 dist/
