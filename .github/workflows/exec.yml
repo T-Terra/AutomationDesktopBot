@@ -1,0 +1,26 @@
+name: Execution of Get products
+
+on:
+  workflow_dispatch:
+
+jobs:
+  cripto:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v4 
+        with:
+          python-version: 'pypy3.12'
+
+      - run: echo "$ENV" > .env
+        name: create .env
+        shell: bash
+        env:
+          ENV: ${{secrets.ENV}}
+      
+      - run: pip install --no-cache-dir -r requirements.txt
+        name: install requirements
+      
+      - run: python3 -m robot -d ./report/ ./test/price.robot
+        name: exec script
