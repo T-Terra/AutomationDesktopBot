@@ -5,8 +5,10 @@ Resource    ${CURDIR}./../resource/priceLib.resource
 Init Bot
     Open Browser Web
 Check For Search
-    Search Product 1
-    Search Product 2
+    Screenshot1
+    Send Message Discord1
+    Screenshot2
+    Send Message Discord2
 Finish Check price
     Close Browser
     
