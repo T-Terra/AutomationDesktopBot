@@ -6,8 +6,8 @@ Library    ./../scripts/sendFile.py
 Library    ./../scripts/readDotEnv.py
 
 *** Variables ***
-${MouseV1}    Mouse Gamer Sem Fio Redragon King 4K Pro, Wireless, 26000 DPI, 7 Botões, Preto - M916-PRO-4K
-${MouseV2}    Mouse Gamer Sem Fio Redragon King Pro, 26000 DPI, 7 Botões, Wireless, Bluetooth, Preto - M916-PRO-1K
+${MouseV1}    Mouse Gamer Sem Fio Redragon King
+${MouseV2}    Mouse Gamer Sem Fio Redragon
 ${FileName1}      product1.png
 ${FileName2}      product2.png
 
