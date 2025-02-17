@@ -1,6 +1,8 @@
 name: Execution of Get products
 
 on:
+  schedule:
+    - cron: '26 15 * * 1,5'
   workflow_dispatch:
 
 jobs:
