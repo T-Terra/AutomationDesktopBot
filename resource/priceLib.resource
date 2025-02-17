@@ -15,6 +15,7 @@ ${FileName2}      product2.png
 Open Browser Web
     Open Browser    url=https://www.kabum.com.br/    browser=chrome    options=add_argument("--headless=new")
     Set Screenshot Directory    ${CURDIR}./../img/
+    Set Window Size    945    1012
     Sleep    5
 Check Cookies
     ${elemento_existe}    Run Keyword And Return Status    Element Should Be Visible    xpath=//button[@id="onetrust-accept-btn-handler"]
