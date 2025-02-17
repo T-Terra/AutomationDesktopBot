@@ -5,6 +5,7 @@ Resource    ${CURDIR}./../resource/priceLib.resource
 Init Bot
     Open Browser Web
 Check For Search
+    Check Cookies
     Screenshot1
     Send Message Discord1
     Screenshot2
