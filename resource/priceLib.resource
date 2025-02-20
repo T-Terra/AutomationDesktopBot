@@ -7,8 +7,8 @@ Library    ./../scripts/readDotEnv.py
 Library    ./../scripts/fetchEmbed.py
 
 *** Variables ***
-${MouseV1}    Mouse Gamer Sem Fio Redragon King
-${MouseV2}    Mouse Gamer Sem Fio Redragon
+${MouseV1}    590436
+${MouseV2}    523248
 ${FileName1}      product1.png
 ${FileName2}      product2.png
 
