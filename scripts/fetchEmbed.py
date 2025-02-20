@@ -5,6 +5,9 @@ def GetDescription():
     listCleanReturn = []
 
     for i in range(0, len(listPrices)):
-        listCleanReturn.append(listPrices[i].replace("*", "")[1:])
+        listCleanReturn.append(listPrices[i].replace("*", "").replace("R$", "").replace(" ", "").replace(",", ".")[1:])
 
-    return listCleanReturn
+    return listCleanReturn or str("Sem Produtos")
+
+def CleanStringPrice(string):
+    return string.replace("R$", "").replace(" ", "").replace(",", ".").replace("🎊PROMOÇÃO!!!🛍️🔥\n\n💸", "")

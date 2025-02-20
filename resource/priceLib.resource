@@ -11,6 +11,7 @@ ${MouseV1}    590436
 ${MouseV2}    523248
 ${FileName1}      product1.png
 ${FileName2}      product2.png
+${DiscordEmpty}    Sem Produtos
 
 *** Keywords ***
 Open Browser Web
@@ -44,41 +45,40 @@ Screenshot1
 
     
 Send Message Discord1
-    ${Is_different}    Set Variable    True
-
     ${WEBHOOK_URL}    readDot
 
     ${TitleProduct1}    Get Text    (//h1)[1]
-    ${Price1}    Get Text    (//h4)[1]
+    ${PriceSite}    Get Text    (//h4)[1]
+    
+    # Função que limpa a string para ser formatada
+    ${CleanPriceSite}    CleanStringPrice    ${PriceSite}
+    
+    ${PriceFloatSite}    Convert To Number    ${CleanPriceSite}
     
     ${PricesList}    Get Description
     
-    FOR    ${price}    IN    @{PricesList}
-        IF    $price == $Price1
-            ${Is_different}    Set Variable    False
-            Exit For Loop
-        ELSE
-            Log To Console    ***NÃO É igual*** ${price} -> ${Price1}
+    # Lógica para verificar se o discord tem produtos
+    IF    $PricesList != $DiscordEmpty
+        FOR    ${price}    IN    @{PricesList}
+            ${CleanPriceDiscord}    CleanStringPrice    ${price}
+            ${PriceFloatDiscord}    Convert To Number    ${CleanPriceDiscord}
+
+            # Lógica para verificar se o preço do site é menor que o preço do produto que já está no discord
+            IF    $PriceFloatSite < $PriceFloatDiscord
+                Log To Console    ***PROMOCAO!!!!!*** ${PriceFloatDiscord} -> ${PriceSite}
+
+                Send Message To Discord   ${TitleProduct1}    ${PriceSite}   ${WEBHOOK_URL}    ${FileName1}    🎉🎊 **PROMOÇÃO!!!** 🛍️🔥\\n\\n
+
+            ELSE
+                Log To Console    Nao vou enviar porque o produto nao esta em promocao ||${TitleProduct1}||
+                Exit For Loop
+            END
         END
-    END
-
-    IF    ${Is_different} == True
-        ${COLOR}    Evaluate    int("E04428", 16)
-    
-        #Faz upload de uma imagem e envia pelo Webhook do Discord
-        ${url_img1}    sendImage    ${FileName1}
-
-        ${MESSAGE}    Create Dictionary     
-        ...    content=
-        ...    embeds=${{[{"title": "${TitleProduct1}", "description": "💸**${Price1}**", "color": ${COLOR}, "url": "${Link}", "image": {"url": "${url_img1}"}}]}}
-
-        ${Res}    POST    ${WEBHOOK_URL}    json=${MESSAGE}
-
-        Log To Console    ${Res}
     ELSE
-        Log To Console    Nao vou enviar porque já temos o produto ||${TitleProduct1}||
+        # Só é enviado caso o canal do discord não tenha produtos
+        Send Message To Discord   ${TitleProduct1}    ${PriceSite}   ${WEBHOOK_URL}    ${FileName1}
     END
-    
+
     Sleep    2
     Go Back
     Sleep    2
@@ -102,40 +102,54 @@ Screenshot2
     Sleep    1
 
 Send Message Discord2
-    ${Is_different}    Set Variable    True
-
     ${WEBHOOK_URL}    readDot
 
     ${TitleProduct2}    Get Text    (//h1)[1]
-    ${Price2}    Get Text    (//h4)[1]
+    ${PriceSite}    Get Text    (//h4)[1]
     Sleep    2
     
-    ${PricesList}    Get Description
-        
-    FOR    ${price}    IN    @{PricesList}
-        IF    $price == $Price2
-            ${Is_different}    Set Variable    False
-            Exit For Loop
-        ELSE
-            Log To Console    ***NÃO É igual*** ${price} -> ${Price2}
-        END
-    END
+    # Função que limpa a string para ser formatada
+    ${CleanPriceSite}    CleanStringPrice    ${PriceSite}
     
-    IF    ${Is_different} == True
-        ${COLOR}    Evaluate    int("E04428", 16)
-            
-        #Faz upload de uma imagem e envia pelo Webhook do Discord
-        ${url_img2}    sendImage    ${FileName2}
+    ${PriceFloatSite}    Convert To Number    ${CleanPriceSite}
+    
+    ${PricesList}    Get Description
+    
+    # Lógica para verificar se o discord tem produtos
+    IF    $PricesList != $DiscordEmpty
+        FOR    ${price}    IN    @{PricesList}
+            ${CleanPriceDiscord}    CleanStringPrice    ${price}
+            ${PriceFloatDiscord}    Convert To Number    ${CleanPriceDiscord}
 
-        ${MESSAGE}    Create Dictionary     
-        ...    content=
-        ...    embeds=${{[{"title": "${TitleProduct2}", "description": "💸**${Price2}**", "color": ${COLOR}, "url": "${Link}", "image": {"url": "${url_img2}"}}]}}
+            # Lógica para verificar se o preço do site é menor que o preço do produto que já está no discord
+            IF    $PriceFloatSite < $PriceFloatDiscord
+                Log To Console    ***PROMOCAO!!!!!*** ${PriceFloatDiscord} -> ${PriceSite}
 
-        ${Res}    POST    ${WEBHOOK_URL}    json=${MESSAGE}
+                Send Message To Discord   ${TitleProduct2}    ${PriceSite}   ${WEBHOOK_URL}    ${FileName2}    🎉🎊 **PROMOÇÃO!!!** 🛍️🔥\\n\\n
 
-        Log To Console    ${Res}
+            ELSE
+                Log To Console    Nao vou enviar porque o produto nao esta em promocao ||${TitleProduct2}||
+                Exit For Loop
+            END
+        END
     ELSE
-        Log To Console    Nao vou enviar porque já temos o produto ||${TitleProduct2}||
+        # Só é enviado caso o canal do discord não tenha produtos
+        Send Message To Discord   ${TitleProduct2}    ${PriceSite}   ${WEBHOOK_URL}    ${FileName2} 
     END
 
     Sleep    1
+Send Message To Discord
+    [Arguments]   ${TitleProduct}     ${PriceSite}    ${WEBHOOK_URL}    ${FileName}    ${Promocao}=
+
+    ${COLOR}    Evaluate    int("E04428", 16)
+
+    #Faz upload de uma imagem e envia pelo Webhook do Discord
+    ${url_img1}    sendImage    ${FileName}
+
+    ${MESSAGE}    Create Dictionary     
+    ...    content=
+    ...    embeds=${{[{"title": "${TitleProduct}", "description": "${Promocao}💸 **${PriceSite}**", "color": ${COLOR}, "url": "${Link}", "image": {"url": "${url_img1}"}}]}}
+
+    ${Res}    POST    ${WEBHOOK_URL}    json=${MESSAGE}
+
+    Log To Console    Status Code ${Res}
