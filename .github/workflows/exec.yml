@@ -2,7 +2,7 @@ name: Execution of Get products
 
 on:
   schedule:
-    - cron: '26 15 * * 1,5'
+    - cron: '26 15 * * *' # Todos os dias ás 12:26
   workflow_dispatch:
 
 jobs:
