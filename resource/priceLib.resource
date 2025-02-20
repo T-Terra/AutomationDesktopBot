@@ -33,6 +33,10 @@ Screenshot1
     Element Should Not Be Visible    xpath://b[contains(text(), "Lamentamos, nenhum produto encontrado")]    message=O Produto pesquisado nao foi encontrado
     
     Sleep    1
+    ${url}    Get Element Attribute    xpath=//a[@data-smarthintproductid='${MouseV1}']    href
+
+    Set Global Variable    ${Link}    ${url}
+
     Click Element    xpath:(//main/div)[1]
     Sleep    1
     Capture Page Screenshot    product1.png
@@ -66,7 +70,7 @@ Send Message Discord1
 
         ${MESSAGE}    Create Dictionary     
         ...    content=
-        ...    embeds=${{[{"title": "${TitleProduct1}", "description": "💸**${Price1}**", "color": ${COLOR}, "image": {"url": "${url_img1}"}}]}}
+        ...    embeds=${{[{"title": "${TitleProduct1}", "description": "💸**${Price1}**", "color": ${COLOR}, "url": "${Link}", "image": {"url": "${url_img1}"}}]}}
 
         ${Res}    POST    ${WEBHOOK_URL}    json=${MESSAGE}
 
@@ -87,6 +91,11 @@ Screenshot2
     Element Should Not Be Visible    xpath://b[contains(text(), "Lamentamos, nenhum produto encontrado")]    message=O Produto pesquisado nao foi encontrado
 
     Sleep    1
+
+    ${url}    Get Element Attribute    xpath=//a[@data-smarthintproductid='${MouseV2}']    href
+
+    Set Global Variable    ${Link}    ${url}
+
     Click Element    xpath:(//main/div)[1]
     Sleep    1
     Capture Page Screenshot    product2.png
@@ -120,7 +129,7 @@ Send Message Discord2
 
         ${MESSAGE}    Create Dictionary     
         ...    content=
-        ...    embeds=${{[{"title": "${TitleProduct2}", "description": "💸**${Price2}**", "color": ${COLOR}, "image": {"url": "${url_img2}"}}]}}
+        ...    embeds=${{[{"title": "${TitleProduct2}", "description": "💸**${Price2}**", "color": ${COLOR}, "url": "${Link}", "image": {"url": "${url_img2}"}}]}}
 
         ${Res}    POST    ${WEBHOOK_URL}    json=${MESSAGE}
 
