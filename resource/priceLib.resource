@@ -29,12 +29,16 @@ Screenshot1
     Input Text    xpath://input[@id="input-busca"]    ${MouseV1}
     Sleep    1
     Press Keys    xpath://input[@id="input-busca"]    ENTER
+
+    Element Should Not Be Visible    xpath://b[contains(text(), "Lamentamos, nenhum produto encontrado")]    message=O Produto pesquisado nao foi encontrado
+    
     Sleep    1
     Click Element    xpath:(//main/div)[1]
     Sleep    1
     Capture Page Screenshot    product1.png
     Sleep    1
 
+    
 Send Message Discord1
     ${Is_different}    Set Variable    True
 
@@ -79,6 +83,9 @@ Screenshot2
     Input Text    xpath://input[@id="input-busca"]    ${MouseV2}
     Sleep    1
     Press Keys    xpath://input[@id="input-busca"]    ENTER
+
+    Element Should Not Be Visible    xpath://b[contains(text(), "Lamentamos, nenhum produto encontrado")]    message=O Produto pesquisado nao foi encontrado
+
     Sleep    1
     Click Element    xpath:(//main/div)[1]
     Sleep    1
