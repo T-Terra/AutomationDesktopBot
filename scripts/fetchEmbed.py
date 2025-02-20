@@ -4,7 +4,7 @@ def GetDescription():
     listPrices = main()
     listCleanReturn = []
 
-    for i in range(0, 2):
+    for i in range(0, len(listPrices)):
         listCleanReturn.append(listPrices[i].replace("*", "")[1:])
 
     return listCleanReturn
