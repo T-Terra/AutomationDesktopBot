@@ -6,10 +6,7 @@ Init Bot
     Open Browser Web
 Check For Search
     Check Cookies
-    Screenshot1
-    Send Message Discord1
-    Screenshot2
-    Send Message Discord2
+    Screenshot And Search
 Finish Check price
     Close Browser
     
