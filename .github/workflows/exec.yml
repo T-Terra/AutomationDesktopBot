@@ -1,4 +1,5 @@
 name: Execution of Get products
+run-name: Search products Kabum
 
 on:
   schedule:
