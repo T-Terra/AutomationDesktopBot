@@ -46,4 +46,12 @@ Search job
     Run Keyword If    ${ELEMENT_EXISTS_EN} == True    Input Text    xpath=//input[contains(@placeholder, "Search")]    ${JOB_DEV}\ue007
     Run Keyword If    ${ELEMENT_EXISTS_PT} == True    Input Text    xpath=//input[contains(@placeholder, "Pesquisar")]    ${JOB_DEV}\ue007
 
+    Sleep    2
+Get Data
+    ${ELEMENT_EXISTS_PT}    Run Keyword And Return Status     Page Should Contain Element   xpath=//li/a[text()="Remoto"]
+    
+    Sleep    2
+
+    Run Keyword If    ${ELEMENT_EXISTS_PT} == True    Click Element    xpath=//li/a[text()="Remoto"]
+
     Sleep    5

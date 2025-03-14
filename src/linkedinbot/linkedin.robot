@@ -6,5 +6,6 @@ Init Bot
     Open Browser Web
     Login
     Search job
+    Get Data
 Finish
     Close Browser
