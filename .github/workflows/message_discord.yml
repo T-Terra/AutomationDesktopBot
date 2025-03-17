@@ -12,19 +12,12 @@ jobs:
   notify-discord:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
-
-      - name: Set up the status message
-        id: status_message
-        run: |
-          echo "title=📢 Status do Workflow" >> $GITHUB_ENV
-          echo "description=Workflow **${{ github.event.workflow_run.name }}** no repositório **${{ github.repository }}** foi finalizado com status: **${{ github.event.workflow_run.conclusion }}**" >> $GITHUB_ENV
-          echo "color=$([[ '${{ github.event.workflow_run.conclusion }}' == 'success' ]] && echo 3066993 || echo 15158332)" >> $GITHUB_ENV
+      - uses: actions/checkout@v4
       
-      - name: send custom message
-        uses: appleboy/discord-action@v1.2.0
+      - uses: sarisia/actions-status-discord@v1
         with:
-          webhook_url: ${{ secrets.DISCORD_WEBHOOK }}
-          color: ${{ env.color }}
-          username: "Monitor bot"
-          message: ${{ env.title }} | ${{ env.description }}
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          status: 📢 Status do Workflow
+          title: "deploy"
+          description: "Workflow **${{ github.event.workflow_run.name }}** no repositório **${{ github.repository }}** foi finalizado com status: **${{ github.event.workflow_run.conclusion }}**"
+          color: 0x0000ff
