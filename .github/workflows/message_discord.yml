@@ -18,18 +18,15 @@ jobs:
           echo "title=📢 Status do Workflow" >> $GITHUB_ENV
           echo "description=Workflow **${{ github.event.workflow_run.name }}** no repositório **${{ github.repository }}** foi finalizado com status: **${{ github.event.workflow_run.conclusion }}**" >> $GITHUB_ENV
           echo "color=$([[ '${{ github.event.workflow_run.conclusion }}' == 'success' ]] && echo 3066993 || echo 15158332)" >> $GITHUB_ENV
+      
+      - name: Create the embed message
+        id: create_embed
+        run: |
+          echo "DISCORD_EMBEDS=$(echo '[{\"title\": \"${{ env.title }}\", \"description\": \"${{ env.description }}\", \"color\": ${{
+            env.color }}}]')" >> $GITHUB_ENV
 
       - name: Enviar notificação para o Discord
         uses: Ilshidur/action-discord@master
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}  # Adicione o webhook como Secret no GitHub
-          DISCORD_EMBEDS: | 
-            ${{ toJson(
-              {
-                "embeds": [{
-                  "title": "${{ env.title }}",
-                  "description": "${{ env.description }}",
-                  "color": ${{ env.color }}
-                }]
-              }
-            ) }}
+          DISCORD_EMBEDS: ${{ env.DISCORD_EMBEDS }}
