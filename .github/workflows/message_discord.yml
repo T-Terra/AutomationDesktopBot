@@ -17,7 +17,6 @@ jobs:
       - uses: sarisia/actions-status-discord@v1
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
-          status: 📢 Status do Workflow
-          title: "deploy"
+          title: "📢 Status do Workflow"
           description: "Workflow **${{ github.event.workflow_run.name }}** no repositório **${{ github.repository }}** foi finalizado com status: **${{ github.event.workflow_run.conclusion }}**"
           color: 0x0000ff
