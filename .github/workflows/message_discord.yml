@@ -12,6 +12,13 @@ jobs:
   notify-discord:
     runs-on: ubuntu-latest
     steps:
+      - name: Set up the status message
+        id: status_message
+        run: |
+          echo "title=📢 Status do Workflow" >> $GITHUB_ENV
+          echo "description=Workflow **${{ github.event.workflow_run.name }}** no repositório **${{ github.repository }}** foi finalizado com status: **${{ github.event.workflow_run.conclusion }}**" >> $GITHUB_ENV
+          echo "color=$([[ '${{ github.event.workflow_run.conclusion }}' == 'success' ]] && echo 3066993 || echo 15158332)" >> $GITHUB_ENV
+
       - name: Enviar notificação para o Discord
         uses: Ilshidur/action-discord@master
         env:
@@ -20,8 +27,8 @@ jobs:
           embeds: |
             ${{ toJson([ 
               {
-                "title": "📢 Status do Workflow",
-                "description": "Workflow **${{ github.event.workflow_run.name }}** no repositório **${{ github.repository }}** foi finalizado com status: **${{ github.event.workflow_run.conclusion }}**",
-                "color": "${{ github.event.workflow_run.conclusion == 'success' && 3066993 || 15158332 }}"
+                "title": "${{ env.title }}",
+                "description": "${{ env.description }}",
+                "color": "${{ env.color }}"
               }
             ]) }}
