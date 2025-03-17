@@ -12,24 +12,24 @@ jobs:
   notify-discord:
     runs-on: ubuntu-latest
     steps:
-      # - name: Set up the status message
-      #   id: status_message
-      #   run: |
-      #     echo "title=📢 Status do Workflow" >> $GITHUB_ENV
-      #     echo "description=Workflow **${{ github.event.workflow_run.name }}** no repositório **${{ github.repository }}** foi finalizado com status: **${{ github.event.workflow_run.conclusion }}**" >> $GITHUB_ENV
-      #     echo "color=$([[ '${{ github.event.workflow_run.conclusion }}' == 'success' ]] && echo 3066993 || echo 15158332)" >> $GITHUB_ENV
+      - name: Set up the status message
+        id: status_message
+        run: |
+          echo "title=📢 Status do Workflow" >> $GITHUB_ENV
+          echo "description=Workflow **${{ github.event.workflow_run.name }}** no repositório **${{ github.repository }}** foi finalizado com status: **${{ github.event.workflow_run.conclusion }}**" >> $GITHUB_ENV
+          echo "color=$([[ '${{ github.event.workflow_run.conclusion }}' == 'success' ]] && echo 3066993 || echo 15158332)" >> $GITHUB_ENV
       
       - name: Create the embed message
         id: create_embed
         run: |
-          embed_json="{\\"embeds\\": [{\\"title\\": \\"${{ env.title }}\\", \\"description\\": \\"${{ env.description }}\\", \\"color\\": ${{ env.color }} }]}"
+          embed_json="{\"embeds\": [{\"title\": \"${{ env.title }}\", \"description\": \"${{ env.description }}\", \"color\": ${{ env.color }} }]}"
           echo "DISCORD_EMBEDS=$embed_json" >> $GITHUB_ENV
       
       - name: Teste
         run: echo ${{ env.DISCORD_EMBEDS }}
 
-      # - name: Enviar notificação para o Discord
-      #   uses: Ilshidur/action-discord@master
-      #   env:
-      #     DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}  # Adicione o webhook como Secret no GitHub
-      #     DISCORD_EMBEDS: ${{ env.DISCORD_EMBEDS }}
+      - name: Enviar notificação para o Discord
+        uses: Ilshidur/action-discord@master
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}  # Adicione o webhook como Secret no GitHub
+          DISCORD_EMBEDS: ${{ env.DISCORD_EMBEDS }}
