@@ -22,8 +22,10 @@ jobs:
       - name: Create the embed message
         id: create_embed
         run: |
-          echo "DISCORD_EMBEDS=$(echo '[{\"title\": \"${{ env.title }}\", \"description\": \"${{ env.description }}\", \"color\": ${{
-            env.color }}}]')" >> $GITHUB_ENV
+          echo "{\"embeds\": [{\"title\": \"${{ env.title }}\", \"description\": \"${{ env.description }}\", \"color\": ${{
+            env.color }}}]}" > embed.json
+          cat embed.json
+          echo "DISCORD_EMBEDS=$(cat embed.json)" >> $GITHUB_ENV
 
       - name: Enviar notificação para o Discord
         uses: Ilshidur/action-discord@master
