@@ -14,7 +14,7 @@ jobs:
       - name: Enviar notificação para o Discord
         uses: Ilshidur/action-discord@master
         env:
-          webhook-url: ${{ secrets.DISCORD_WEBHOOK }}  # Adicione o webhook como Secret no GitHub
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}  # Adicione o webhook como Secret no GitHub
         with:
           args: |
             {
