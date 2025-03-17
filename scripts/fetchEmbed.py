@@ -1,5 +1,5 @@
 from check import main
-#funcao que retorna uma lista com os dois ultimos precos no robot
+#funcao que retorna uma lista com os dois ultimos precos do discord
 def GetDescription():
     listPrices = main()
     listCleanReturn = []
@@ -10,4 +10,7 @@ def GetDescription():
     return listCleanReturn or str("Sem Produtos")
 
 def CleanStringPrice(string):
+    if "Desculpe".lower() in  string.lower():
+        return None
+
     return string.replace("R$", "").replace(" ", "").replace(",", ".").replace("🎊PROMOÇÃO!!!🛍️🔥\n\n💸", "")

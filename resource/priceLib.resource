@@ -52,33 +52,19 @@ Send Message
     ${TitleProduct1}    Get Text    (//h1)[1]
     ${PriceSite}    Get Text    (//h4)[1]
     
-    # Função que limpa a string para ser formatada
+    # Função que limpa a string que vem do site para ser formatada
     ${CleanPriceSite}    CleanStringPrice    ${PriceSite}
     
-    ${PriceFloatSite}    Convert To Number    ${CleanPriceSite}
-    
-    ${PricesList}    Get Description
-    
-    # Lógica para verificar se o discord tem produtos
-    IF    $PricesList != $DiscordEmpty
-        FOR    ${price}    IN    @{PricesList}
-            ${CleanPriceDiscord}    CleanStringPrice    ${price}
-            ${PriceFloatDiscord}    Convert To Number    ${CleanPriceDiscord}
-
-            # Lógica para verificar se o preço do site é menor que o preço do produto que já está no discord
-            IF    $PriceFloatSite < $PriceFloatDiscord
-                Log To Console    ***PROMOCAO!!!!!*** ${PriceFloatDiscord} -> ${PriceSite}
-
-                Send Message To Discord   ${TitleProduct1}    ${PriceSite}   ${WEBHOOK_URL}    ${NameFile}    🎉🎊 **PROMOÇÃO!!!** 🛍️🔥\\n\\n
-
-            ELSE
-                Log To Console    Nao vou enviar porque o produto nao esta em promocao ||${TitleProduct1}||
-                Exit For Loop
-            END
-        END
+    # Agora se o cleanprice retornar None quer dizer que o produto está indisponínel
+    IF    $CleanPriceSite == $None
+        Send Message To Discord    ${TitleProduct1}    **Produto Indisponível**    ${WEBHOOK_URL}    ${NameFile}
+        Log To Console    Produto indisponivel ||${TitleProduct1}||
     ELSE
-        # Só é enviado caso o canal do discord não tenha produtos
-        Send Message To Discord   ${TitleProduct1}    ${PriceSite}   ${WEBHOOK_URL}    ${NameFile}
+        ${PriceFloatSite}    Convert To Number    ${CleanPriceSite}
+        
+        ${PricesList}    Get Description
+
+        If Send message or No    ${PricesList}    ${PriceFloatSite}    ${TitleProduct1}    ${PriceSite}    ${WEBHOOK_URL}    ${NameFile}
     END
 
     Sleep    2
@@ -102,3 +88,26 @@ Send Message To Discord
 Read File Products
     ${ProductsList}    Open Files    products_code.txt    r    utf-8
     RETURN    ${ProductsList}
+If Send message or No
+    [Arguments]    ${PricesList}    ${PriceFloatSite}    ${TitleProduct}    ${PriceSite}    ${WEBHOOK_URL}    ${NameFile}
+    # Lógica para verificar se o discord tem produtos
+    IF    $PricesList != $DiscordEmpty
+        FOR    ${price}    IN    @{PricesList}
+            ${CleanPriceDiscord}    CleanStringPrice    ${price}
+            ${PriceFloatDiscord}    Convert To Number    ${CleanPriceDiscord}
+
+            # Lógica para verificar se o preço do site é menor que o preço do produto que já está no discord
+            IF    $PriceFloatSite < $PriceFloatDiscord
+                Log To Console    ***PROMOCAO!!!!!*** ${PriceFloatDiscord} -> ${PriceSite}
+
+                Send Message To Discord   ${TitleProduct}    ${PriceSite}   ${WEBHOOK_URL}    ${NameFile}    🎉🎊 **PROMOÇÃO!!!** 🛍️🔥\\n\\n
+
+            ELSE
+                Log To Console    Nao vou enviar porque o produto nao esta em promocao ||${TitleProduct}||
+                Exit For Loop
+            END
+        END
+    ELSE
+        # Só é enviado caso o canal do discord não tenha produtos
+        Send Message To Discord   ${TitleProduct}    ${PriceSite}   ${WEBHOOK_URL}    ${NameFile}
+    END
