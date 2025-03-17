@@ -1,7 +1,7 @@
 name: Notify Discord on Workflow Completion
 
 on:
-  workflow_dispath:
+  workflow_dispatch:
   workflow_run:
     workflows: ["Execution of Get products"]  # Substitua pelo nome do workflow a ser monitorado
     types:
