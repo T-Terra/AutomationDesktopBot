@@ -1,0 +1,23 @@
+name: Notify Discord on Workflow Completion
+
+on:
+  workflow_dispath:
+  workflow_run:
+    workflows: ["Execution of Get products"]  # Substitua pelo nome do workflow a ser monitorado
+    types:
+      - completed  # Executa apenas quando o workflow terminar
+
+jobs:
+  notify-discord:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Enviar notificação para o Discord
+        uses: Ilshidur/action-discord@master
+        with:
+          webhook-url: ${{ secrets.DISCORD_WEBHOOK }}  # Adicione o webhook como Secret no GitHub
+          embed: |
+            {
+              "title": "📢 Status do Workflow",
+              "description": "Workflow **${{ github.event.workflow_run.name }}** no repositório **${{ github.repository }}** foi finalizado com status: **${{ github.event.workflow_run.conclusion }}**",
+              "color": "${{ github.event.workflow_run.conclusion == 'success' && '3066993' || '15158332' }}"
+            }
