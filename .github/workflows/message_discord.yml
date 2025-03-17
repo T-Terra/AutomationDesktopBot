@@ -23,12 +23,13 @@ jobs:
         uses: Ilshidur/action-discord@master
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}  # Adicione o webhook como Secret no GitHub
-        with:
-          entryPoint: |
-            [
+          DISCORD_EMBEDS: | 
+            ${{ toJson(
               {
-                "title": "${{ env.title }}",
-                "description": "${{ env.description }}",
-                "color": ${{ env.color }}
+                "embeds": [{
+                  "title": "${{ env.title }}",
+                  "description": "${{ env.description }}",
+                  "color": ${{ env.color }}
+                }]
               }
-            ]
+            ) }}
