@@ -16,7 +16,7 @@ jobs:
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}  # Adicione o webhook como Secret no GitHub
         with:
-          args: ${{ toJson([
+          embeds: ${{ toJson([
             {
               "title": "📢 Status do Workflow",
               "description": "Workflow **${{ github.event.workflow_run.name }}** no repositório **${{ github.repository }}** foi finalizado com status: **${{ github.event.workflow_run.conclusion }}**",
