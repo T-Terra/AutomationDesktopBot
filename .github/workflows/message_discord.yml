@@ -13,9 +13,10 @@ jobs:
     steps:
       - name: Enviar notificação para o Discord
         uses: Ilshidur/action-discord@master
-        with:
+        env:
           webhook-url: ${{ secrets.DISCORD_WEBHOOK }}  # Adicione o webhook como Secret no GitHub
-          embed: |
+        with:
+          args: |
             {
               "title": "📢 Status do Workflow",
               "description": "Workflow **${{ github.event.workflow_run.name }}** no repositório **${{ github.repository }}** foi finalizado com status: **${{ github.event.workflow_run.conclusion }}**",
