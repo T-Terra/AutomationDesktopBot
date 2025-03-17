@@ -42,7 +42,7 @@ class MyClient(discord.Client):
         
             print(f'📩 Lendo mensagens do canal: {channel.name}')
 
-            messages = [msg async for msg in channel.history(limit=2)]
+            messages = [msg async for msg in channel.history(limit=int(os.getenv('LIMIT_MSG')))]
             if not messages:
                 print("⚠️ Nenhuma mensagem encontrada no histórico.")
             else:

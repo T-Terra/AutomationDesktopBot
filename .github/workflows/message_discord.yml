@@ -25,10 +25,10 @@ jobs:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}  # Adicione o webhook como Secret no GitHub
         with:
           embeds: |
-            ${{ toJson([ 
+            [
               {
                 "title": "${{ env.title }}",
                 "description": "${{ env.description }}",
-                "color": "${{ env.color }}"
+                "color": ${{ env.color }}
               }
-            ]) }}
+            ]

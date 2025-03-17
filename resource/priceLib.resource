@@ -9,6 +9,7 @@ Library    ./../scripts/readFiles.py
 
 *** Variables ***
 ${DiscordEmpty}    Sem Produtos
+${UnavailableProduct}    ProdutoIndisponível
 
 *** Keywords ***
 Open Browser Web
@@ -42,10 +43,10 @@ Screenshot And Search
         Capture Page Screenshot    ${Product}.png
         Sleep    1
 
-        Send Message    ${Product}.png
+        Send Message    ${Product}.png    ${Product}
     END
 Send Message
-    [Arguments]    ${NameFile}
+    [Arguments]    ${NameFile}    ${IdProduct}=
 
     ${WEBHOOK_URL}    readDot
 
@@ -57,7 +58,7 @@ Send Message
     
     # Agora se o cleanprice retornar None quer dizer que o produto está indisponínel
     IF    $CleanPriceSite == $None
-        Send Message To Discord    ${TitleProduct1}    **Produto Indisponível**    ${WEBHOOK_URL}    ${NameFile}
+        Send Message To Discord    ${TitleProduct1}    **Produto Indisponível**    ${WEBHOOK_URL}    ${NameFile}    Código do Produto: **${IdProduct}**
         Log To Console    Produto indisponivel ||${TitleProduct1}||
     ELSE
         ${PriceFloatSite}    Convert To Number    ${CleanPriceSite}
@@ -71,7 +72,7 @@ Send Message
     Go Back
     Sleep    2
 Send Message To Discord
-    [Arguments]   ${TitleProduct}     ${PriceSite}    ${WEBHOOK_URL}    ${FileName}    ${Promocao}=
+    [Arguments]   ${TitleProduct}     ${PriceSite}    ${WEBHOOK_URL}    ${FileName}    ${Content}=    ${Promocao}=
 
     ${COLOR}    Evaluate    int("E04428", 16)
 
@@ -79,7 +80,7 @@ Send Message To Discord
     ${url_img1}    sendImage    ${FileName}
 
     ${MESSAGE}    Create Dictionary     
-    ...    content=
+    ...    content=${Content}
     ...    embeds=${{[{"title": "${TitleProduct}", "description": "${Promocao}💸 **${PriceSite}**", "color": ${COLOR}, "url": "${Link}", "image": {"url": "${url_img1}"}}]}}
 
     ${Res}    POST    ${WEBHOOK_URL}    json=${MESSAGE}
@@ -90,21 +91,26 @@ Read File Products
     RETURN    ${ProductsList}
 If Send message or No
     [Arguments]    ${PricesList}    ${PriceFloatSite}    ${TitleProduct}    ${PriceSite}    ${WEBHOOK_URL}    ${NameFile}
+    
     # Lógica para verificar se o discord tem produtos
     IF    $PricesList != $DiscordEmpty
         FOR    ${price}    IN    @{PricesList}
-            ${CleanPriceDiscord}    CleanStringPrice    ${price}
-            ${PriceFloatDiscord}    Convert To Number    ${CleanPriceDiscord}
+            IF    $price != $UnavailableProduct
+                ${CleanPriceDiscord}    CleanStringPrice    ${price}
+                ${PriceFloatDiscord}    Convert To Number    ${CleanPriceDiscord}
 
-            # Lógica para verificar se o preço do site é menor que o preço do produto que já está no discord
-            IF    $PriceFloatSite < $PriceFloatDiscord
-                Log To Console    ***PROMOCAO!!!!!*** ${PriceFloatDiscord} -> ${PriceSite}
+                # Lógica para verificar se o preço do site é menor que o preço do produto que já está no discord
+                IF    $PriceFloatSite < $PriceFloatDiscord
+                    Log To Console    ***PROMOCAO!!!!!*** ${PriceFloatDiscord} -> ${PriceSite}
 
-                Send Message To Discord   ${TitleProduct}    ${PriceSite}   ${WEBHOOK_URL}    ${NameFile}    🎉🎊 **PROMOÇÃO!!!** 🛍️🔥\\n\\n
+                    Send Message To Discord   ${TitleProduct}    ${PriceSite}   ${WEBHOOK_URL}    ${NameFile}    🎉🎊 **PROMOÇÃO!!!** 🛍️🔥\\n\\n
 
+                ELSE
+                    Log To Console    Nao vou enviar porque o produto nao esta em promocao ||${TitleProduct}||
+                    Exit For Loop
+                END
             ELSE
-                Log To Console    Nao vou enviar porque o produto nao esta em promocao ||${TitleProduct}||
-                Exit For Loop
+                Log To Console    Not is a valid price
             END
         END
     ELSE
