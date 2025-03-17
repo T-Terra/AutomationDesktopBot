@@ -19,7 +19,6 @@ jobs:
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
           title: "📢 Status do Workflow"
           description: |
-            "Workflow **${{ github.event.workflow_run.name }}** 
-            no repositório **${{ github.repository }}** 
-            foi finalizado com status: **${{ github.event.workflow_run.conclusion }}**"
+            Workflow **${{ github.event.workflow_run.name }}** 
+            foi finalizado com status: **${{ github.event.workflow_run.conclusion }}**
           color: 35E330
