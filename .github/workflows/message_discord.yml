@@ -24,7 +24,7 @@ jobs:
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}  # Adicione o webhook como Secret no GitHub
         with:
-          args: |
+          entryPoint: |
             [
               {
                 "title": "${{ env.title }}",
