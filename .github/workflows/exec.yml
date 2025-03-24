@@ -25,6 +25,9 @@ jobs:
       - run: pip install --upgrade pip setuptools wheel
         name: upgrade tools
       
+      - run: pip install git+https://github.com/okunishinishi/python-stringcase.git
+        name: install stringcase
+      
       - run: pip install --no-cache-dir -r requirements.txt
         name: install requirements
       
