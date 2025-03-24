@@ -21,6 +21,9 @@ jobs:
         shell: bash
         env:
           ENV: ${{secrets.ENV}}
+
+      - run: pip install --upgrade pip setuptools wheel
+        name: upgrade tools
       
       - run: pip install --no-cache-dir -r requirements.txt
         name: install requirements
