@@ -25,8 +25,8 @@ jobs:
       - run: pip install --upgrade pip setuptools wheel
         name: upgrade tools
             
-      - run: pip install --no-cache-dir -r requirements.txt
-        name: install requirements
+      - run: poetry install
+        name: install requirements with poetry
       
-      - run: python3 -m robot -d ./report/ ./test/price.robot
+      - run: poetry run python3 -m robot -d .\report\ .\src\price.robot
         name: exec script

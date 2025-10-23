@@ -13,7 +13,7 @@ ${UnavailableProduct}    ProdutoIndisponível
 
 *** Keywords ***
 Open Browser Web
-    Open Browser    url=https://www.kabum.com.br/    browser=chrome    options=add_argument("--headless=new")
+    Open Browser    url=https://www.kabum.com.br/    browser=chrome    #options=add_argument("--headless=new")
     Set Screenshot Directory    ${CURDIR}./../img/
     Set Window Size    945    1012
     Sleep    5
@@ -27,9 +27,9 @@ Check Cookies
 Screenshot And Search
     ${ProductsCodeList}    Read File Products
     FOR    ${Product}    IN    @{ProductsCodeList}
-        Input Text    xpath://input[@id="input-busca"]    ${Product}
-        Sleep    1
-        Press Keys    xpath://input[@id="input-busca"]    ENTER
+        Input Text    xpath://input[@id="inputBusca"]    ${Product}
+        Sleep    60
+        Press Keys    xpath://input[@id="inputBusca"]    ENTER
 
         Element Should Not Be Visible    xpath://b[contains(text(), "Lamentamos, nenhum produto encontrado")]    message=O Produto pesquisado nao foi encontrado
         
